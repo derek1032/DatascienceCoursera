@@ -1,0 +1,65 @@
+---
+Title: "statistical_inference_project_part2"
+Author: Derek Chang
+output: pdf_document
+---
+## Title: statistical_inference_project_part2
+## Author: Derek Chang
+
+## Overview
+This part is a statistical analysis based on the dataset "ToothGrowth". In this report, a basic summary of the data and the statistical analysis are provided. 
+
+## Data description
+The response is the length of odontoblasts (teeth) in each of 10 guinea pigs at each of three dose levels of Vitamin C (0.5, 1, and 2 mg) with each of two delivery methods (orange juice or ascorbic acid).
+
+## Data format
+A data frame with 60 observations on 3 variables.
+
+[,1]	 len	 numeric	 Tooth length
+
+[,2]	 supp	 factor	 Supplement type (VC or OJ).
+
+[,3]	 dose	 numeric	 Dose in milligrams.
+
+## Load the ToothGrowth data and perform some basic exploratory data analyses
+
+```{r,warning=F}
+library(datasets)
+library(ggplot2)
+# Load the ToothGrowth data 
+toothgrowth = ToothGrowth
+# perform some basic exploratory data analyses 
+toothgrowth$supp <- as.factor(toothgrowth$supp)
+levels(toothgrowth$supp) = c("Oriange Juice(OJ)","Ascorbic Acid(VC)")
+p1 <- ggplot(toothgrowth,aes(dose,len))+
+  geom_point(pch=1,cex=6)+
+  facet_wrap(~supp)+
+  geom_smooth()+
+  labs(x="Dose(mg)",y="Tooth Length")
+p1
+```
+In the figure, the trend of tooth length is upward after increasing the dose levels of Vitamin C. 
+
+## Provide a basic summary of the data
+
+```{r}
+summary(toothgrowth)
+# summary of the delivery method, orange juice
+summary(subset(toothgrowth,supp=="Oriange Juice(OJ)"))
+# summary of the delivery method, ascorbic acid
+summary(subset(toothgrowth,supp=="Ascorbic Acid(VC)"))
+```
+
+## Use confidence intervals and/or hypothesis tests to compare tooth growth by supp and dose 
+```{r}
+# two sample t-test
+t.test(len~supp, toothgrowth[toothgrowth$dose==0.5,])
+t.test(len~supp, toothgrowth[toothgrowth$dose==1.0,])
+t.test(len~supp, toothgrowth[toothgrowth$dose==2.0,])
+```
+Based on two sample t-test of different delivery methods, when the dose levels equal to 0.5 and 1.0, null hypothesis can be rejected, the true difference in means is not equal to 0. However, when the dose level is 2.0, the 95 percent confidence interval covers zero, so we cannot reject null hypothesis.
+
+## State your conclusions and the assumptions needed for your conclusions
+In this analysis, we assume the subsets of different delivery methods are independent two groups. From exploratory data analyses, no matter what delivery method is chosen, when the dose level of Vitamin C is increased, the length of odontoblasts is also increased. In addition, based on the two sample t-test, for dosage of 0.5 mg and 1.0 mg, orange juice can produce a stronger effect on the tooth growth than ascorbic acid.
+
+
