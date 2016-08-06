@@ -1,2 +1,2 @@
 # DatascienceCoursera
-Projects for data science specialization on Coursera
+Projects for data science specialization on Coursera. In this data science specialization, I learned many useful R packges, such as ggplot2, dplyr, data.table, reshape2...
